@@ -10,5 +10,4 @@ public class Main {
         int soma = a+b;
         System.out.println("SOMA = "+ soma);
     }
- 
 }
