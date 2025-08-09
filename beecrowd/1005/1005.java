@@ -10,4 +10,4 @@ public class Main {
         double media = ((a * 3.5) + (b * 7.5))/11;
         System.out.printf("MEDIA = %.5f\n", media);
     }
-}
+} 
