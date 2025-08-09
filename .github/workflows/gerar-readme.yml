@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Clonar repositório
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -26,20 +28,15 @@ jobs:
         run: |
           python .github/scripts/gerar_readme.py
 
-      - name: Configurar usuário git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Configurar remote para usar token
+      - name: Configurar remote com token
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
-      - name: Commit do novo README.md
+      - name: Configurar Git e aplicar mudanças
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
-          git pull --rebase
-          git push
+          git push origin main
