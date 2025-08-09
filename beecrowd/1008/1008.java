@@ -12,4 +12,4 @@ public class Main {
         System.out.println("NUMBER = " + numFunc);
         System.out.printf("SALARY = U$ %.2f\n", salario);
     }
-}
+} 
