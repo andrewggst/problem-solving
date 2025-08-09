@@ -1,39 +1,48 @@
 name: Atualizar README da pasta beecrowd
 
 on:
+  push:
+    paths:
+      - 'beecrowd/**'
   workflow_dispatch:
 
 jobs:
-  update-readme:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout completo do repositório
+      - name: Clonar repositório
         uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
         with:
-          fetch-depth: 0
+          python-version: '3.x'
 
-      - name: Configurar Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Atualizar branch main com o remoto
-        run: |
-          git checkout main
-          git pull --rebase origin main
+      - name: Instalar dependências (se necessário)
+        run: pip install --upgrade pip
 
       - name: Gerar README.md da pasta beecrowd
         run: python .github/scripts/gerar_readme.py
 
-      - name: Commitar alterações, se houver
+      - name: Criar novo branch com alterações
         run: |
+          BRANCH_NAME=update-readme-$(date +%Y%m%d-%H%M%S)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b $BRANCH_NAME
           git add beecrowd/README.md
-          git diff --cached --quiet || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
+          git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
+          git push origin $BRANCH_NAME
 
-      - name: Push para a branch main
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git push origin main
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Criar Pull Request automaticamente
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 🤖 Atualiza README da pasta beecrowd
+          body: |
+            Este PR foi gerado automaticamente para atualizar o `README.md` da pasta `beecrowd`.
+          branch: ${{ env.BRANCH_NAME }}
+          base: main
