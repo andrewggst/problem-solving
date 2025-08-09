@@ -1,0 +1,2 @@
+﻿### Problema 1106
+Link: https://www.beecrowd.com.br/judge/pt/problems/view/1106

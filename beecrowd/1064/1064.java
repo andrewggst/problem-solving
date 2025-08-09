@@ -1,0 +1,20 @@
+import java.io.IOException;
+import java.util.Scanner; 
+
+public class Main {
+ 
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int count = 0;
+        double media = 0.0;
+        for (int i = 0; i < 6; i ++){
+            double num = sc.nextDouble();
+            if(num > 0){
+                count ++;
+                media += num;
+            }
+        }
+        System.out.println(count + " valores positivos");
+        System.out.printf("%.1f\n", media / count);
+    }
+}

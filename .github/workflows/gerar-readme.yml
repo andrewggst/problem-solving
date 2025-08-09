@@ -1,0 +1,35 @@
+name: Atualizar README da pasta beecrowd
+
+on:
+  push:
+    paths:
+      - 'beecrowd/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Instalar dependências (se necessário)
+        run: pip install --upgrade pip
+
+      - name: Gerar README.md da pasta beecrowd
+        run: |
+          python .github/scripts/gerar_readme.py
+
+      - name: Commit do novo README.md
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add beecrowd/README.md
+          git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
+          git push
