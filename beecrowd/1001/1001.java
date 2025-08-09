@@ -10,4 +10,4 @@ public class Main {
         int x = a+b;
         System.out.println("X = " + x);
     }
-}
+} 
