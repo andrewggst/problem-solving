@@ -11,4 +11,4 @@ public class Main {
         double salarioComissao = salarioFixo + (totalVendas * 0.15);
         System.out.printf("TOTAL = R$ %.2f\n", salarioComissao);
     }
-}
+} 
