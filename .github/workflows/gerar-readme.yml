@@ -15,16 +15,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Configurar Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Sincronizar branch main local com remoto
-        run: |
-          git fetch origin main
-          git reset --hard origin/main
-          git clean -fd
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -34,13 +29,22 @@ jobs:
       - name: Rodar script para gerar README
         run: python .github/scripts/gerar_readme.py
 
-      - name: Commitar e pushar alterações
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commitar alterações se houver
         run: |
           git add beecrowd/README.md
           git diff --cached --quiet || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
+
+      - name: Debug Git status
+        run: |
+          git remote -v
+          git branch -vv
+          git log --oneline -5
+          git status
+
+      - name: Puxar alterações remotas e fazer push
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git fetch origin main
-          git reset --hard origin/main
-          git push origin main --force
+          git pull --rebase origin main || true
+          git push origin main --force-with-lease
