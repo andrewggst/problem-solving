@@ -10,7 +10,7 @@ This repository contains my solutions to programming problems from various onlin
 
 ## <img src="https://img.icons8.com/ios-glyphs/24/000000/folder-invoices--v1.png" alt="folder" /> Organization
 
-Each subfolder corresponds to a source (e.g., `beecrowd/`, `olimpiadas/`). Inside each folder:
+Each subfolder corresponds to a source (e.g., `beecrowd/`, `olympics/`). Inside each folder:
 
 - A `.java` file (or the language used) with the solution.
 - A `README.md` with a link to the problem and, in some cases, a summary of the problem statement or approach used.
