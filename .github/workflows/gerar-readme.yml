@@ -1,10 +1,10 @@
-name: Atualizar README da pasta beecrowd (debug)
+name: Atualizar README da pasta beecrowd
 
 on:
   workflow_dispatch:
 
 jobs:
-  update-readme-debug:
+  update-readme:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,44 +18,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Verificar branch atual e status inicial
-        run: |
-          git branch
-          git status
-          git remote -v
-          echo "==== lista arquivos:"
-          ls -la beecrowd
-
-      - name: Sincronizar branch main com remoto
+      - name: Atualizar branch main com o remoto
         run: |
           git checkout main
           git pull --rebase origin main
-          git status
-          git log -1
 
-      - name: Rodar script para gerar README
+      - name: Gerar README.md da pasta beecrowd
         run: python .github/scripts/gerar_readme.py
 
-      - name: Verificar alterações após script
-        run: |
-          git status
-          git diff
-
-      - name: Commitar alterações se houver
+      - name: Commitar alterações, se houver
         run: |
           git add beecrowd/README.md
-          git diff --cached --quiet && echo "Nada para commitar" || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
-          git log -1
+          git diff --cached --quiet || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
 
-      - name: Ver status remoto antes do push
-        run: |
-          git fetch origin main
-          git log origin/main -1
-          git log main -1
-
-      - name: Fazer push para branch main (debug)
+      - name: Push para a branch main
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git push origin main || (echo "PUSH FALHOU"; git status; git log -5; exit 1)
+          git push origin main
