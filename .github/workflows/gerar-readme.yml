@@ -11,20 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout do repositório com histórico completo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Configurar Git e autenticar push
+      - name: Configurar git para commitar
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Remover branch local e criar novamente
+      - name: Resetar branch local para remoto
         run: |
-          git checkout --detach
-          git branch -D main || echo "Branch main não existe localmente"
-          git checkout -b main
           git fetch origin main
           git reset --hard origin/main
           git clean -fd
@@ -37,11 +35,14 @@ jobs:
       - name: Instalar dependências (se houver)
         run: pip install --upgrade pip
 
-      - name: Gerar README.md da pasta beecrowd
+      - name: Gerar README.md
         run: python .github/scripts/gerar_readme.py
 
-      - name: Commit do novo README.md e push forçado
+      - name: Commit e push das alterações
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add beecrowd/README.md
-          git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
-          git push origin main --force
+          git diff --cached --quiet || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
+          git push origin main
