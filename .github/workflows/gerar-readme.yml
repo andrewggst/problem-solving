@@ -11,17 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do repositório com histórico completo
+      - name: Checkout completo do repositório
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Configurar git para commitar
+      - name: Configurar Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Resetar branch local para remoto
+      - name: Sincronizar branch main local com remoto
         run: |
           git fetch origin main
           git reset --hard origin/main
@@ -32,17 +31,16 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar dependências (se houver)
-        run: pip install --upgrade pip
-
-      - name: Gerar README.md
+      - name: Rodar script para gerar README
         run: python .github/scripts/gerar_readme.py
 
-      - name: Commit e push das alterações
+      - name: Commitar e pushar alterações
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add beecrowd/README.md
           git diff --cached --quiet || git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
           git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git push origin main
+          git fetch origin main
+          git reset --hard origin/main
+          git push origin main --force
