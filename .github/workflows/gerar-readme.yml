@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositório
+      - name: Checkout com histórico completo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Configurar Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
@@ -25,9 +27,10 @@ jobs:
       - name: Gerar README.md da pasta beecrowd
         run: python .github/scripts/gerar_readme.py
 
-      - name: Criar novo branch com alterações
+      - name: Criar novo branch e commit
         run: |
-          BRANCH_NAME=update-readme-$(date +%Y%m%d-%H%M%S)
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME=update-readme-${TIMESTAMP}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b $BRANCH_NAME
@@ -35,14 +38,12 @@ jobs:
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
           git push origin $BRANCH_NAME
 
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-
-      - name: Criar Pull Request automaticamente
-        uses: peter-evans/create-pull-request@v5
+      - name: Criar Pull Request automático
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: 🤖 Atualiza README da pasta beecrowd
+          commit-message: "🤖 Atualiza README da pasta beecrowd automaticamente"
+          title: "🤖 Atualiza README da pasta beecrowd automaticamente"
           body: |
-            Este PR foi gerado automaticamente para atualizar o `README.md` da pasta `beecrowd`.
-          branch: ${{ env.BRANCH_NAME }}
-          base: main
+            Este PR foi criado automaticamente pelo GitHub Actions para atualizar o `README.md` com os exercícios resolvidos.
+          branch: ${{ steps.branch-name.outputs.name }}
