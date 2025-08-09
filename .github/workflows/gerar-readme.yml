@@ -25,7 +25,7 @@ jobs:
         run: pip install --upgrade pip
 
       - name: Gerar README.md
-        run: python .github/scripts/gerar_readme.py
+        run: python scripts/gerar_readme.py
 
       - name: Criar branch temporária com mudanças
         run: |
