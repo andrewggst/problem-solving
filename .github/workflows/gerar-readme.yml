@@ -21,29 +21,30 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar dependências (se necessário)
+      - name: Instalar dependências
         run: pip install --upgrade pip
 
-      - name: Gerar README.md da pasta beecrowd
+      - name: Gerar README.md
         run: python .github/scripts/gerar_readme.py
 
-      - name: Criar novo branch e commit
+      - name: Criar branch temporária com mudanças
         run: |
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          BRANCH_NAME=update-readme-${TIMESTAMP}
+          BRANCH_NAME=auto/update-readme-$(date +%s)
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b $BRANCH_NAME
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente"
           git push origin $BRANCH_NAME
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Criar Pull Request automático
+      - name: Criar Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "🤖 Atualiza README da pasta beecrowd automaticamente"
           title: "🤖 Atualiza README da pasta beecrowd automaticamente"
           body: |
-            Este PR foi criado automaticamente pelo GitHub Actions para atualizar o `README.md` com os exercícios resolvidos.
-          branch: ${{ steps.branch-name.outputs.name }}
+            Este PR foi gerado automaticamente pelo GitHub Actions.
+            Atualiza o `README.md` da pasta `beecrowd`.
+          branch: ${{ env.BRANCH_NAME }}
