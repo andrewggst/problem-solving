@@ -10,5 +10,4 @@ public class Main {
         int prod = num1 * num2;
         System.out.println("PROD = " + prod);
     }
- 
 }
