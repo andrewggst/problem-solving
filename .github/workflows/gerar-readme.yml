@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositório
+      - name: Clonar repositório (com histórico completo)
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # NECESSÁRIO para git pull funcionar
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -28,15 +28,21 @@ jobs:
         run: |
           python .github/scripts/gerar_readme.py
 
-      - name: Configurar remote com token
+      - name: Configurar remote para usar token de acesso
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
-      - name: Configurar Git e aplicar mudanças
+      - name: Configurar Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fazer pull com rebase para evitar conflito
+        run: |
           git pull --rebase origin main
+
+      - name: Commit e push do README
+        run: |
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
           git push origin main
