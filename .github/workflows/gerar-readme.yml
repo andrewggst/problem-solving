@@ -7,12 +7,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-readme:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do repositório
+      - name: Clonar repositório
         uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Instalar dependências (se necessário)
+        run: pip install --upgrade pip
 
       - name: Configurar Git e sincronizar branch main
         run: |
@@ -23,16 +31,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Configurar Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
       - name: Gerar README.md da pasta beecrowd
         run: python .github/scripts/gerar_readme.py
 
       - name: Commit do novo README.md
         run: |
+          git fetch origin main
+          git reset --hard origin/main
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
           git push origin main --force
