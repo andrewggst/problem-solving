@@ -1,12 +1,10 @@
-# Exercício [1002] - Área do Círculo
+# Exercício 1002 – Área do Círculo
 
-## Enunciado (resumo)
-Cálculo da área do círculo e exibição do resultado
+## 📝 Enunciado (resumo)
+Recebe o raio de um círculo como entrada, calcula a área com a fórmula `A = π * raio²`, e exibe o resultado com 4 casas decimais.
 
-## Link para o problema  
-[Beecrowd - Exercício [1002]](https://www.beecrowd.com.br/judge/pt/problems/view/1002)
+## 🔗 Link para o problema
+[Beecrowd - Exercício 1002](https://www.beecrowd.com.br/judge/pt/problems/view/1002)
 
-## Código  
-O arquivo principal é `1002.java`.
-
----
+## 💻 Código
+O arquivo principal é [`1002.java`](1002.java).
