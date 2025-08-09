@@ -14,4 +14,4 @@ public class Main {
         double valorTotal = qtd1 * valorUnit1 + qtd2 * valorUnit2;
         System.out.printf("VALOR A PAGAR: R$ %.2f\n", valorTotal);
     }
-}
+} 
