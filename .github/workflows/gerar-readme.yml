@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositório (com histórico completo)
+      - name: Clonar repositório (fetch full history)
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -21,19 +21,19 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar dependências (se necessário)
+      - name: Instalar dependências
         run: pip install --upgrade pip
 
       - name: Gerar README.md da pasta beecrowd
-        run: |
-          python .github/scripts/gerar_readme.py
+        run: python .github/scripts/gerar_readme.py
 
       - name: Configurar Git e aplicar mudanças
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch origin main
+          git reset --hard origin/main
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase --no-edit origin main
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
           git push origin main
