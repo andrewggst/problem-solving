@@ -28,21 +28,12 @@ jobs:
         run: |
           python .github/scripts/gerar_readme.py
 
-      - name: Configurar remote para usar token de autenticação
+      - name: Configurar Git e aplicar mudanças
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-      - name: Configurar Git
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Atualizar branch antes de commitar
-        run: |
-          git pull --rebase origin main
-
-      - name: Commit e push do README
-        run: |
+          git pull --rebase --no-edit origin main
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
           git push origin main
