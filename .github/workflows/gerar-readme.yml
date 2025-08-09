@@ -26,10 +26,17 @@ jobs:
         run: |
           python .github/scripts/gerar_readme.py
 
-      - name: Commit do novo README.md
+      - name: Configurar usuário git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Configurar remote para usar token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Commit do novo README.md
+        run: |
           git add beecrowd/README.md
           git commit -m "🤖 Atualiza README da pasta beecrowd automaticamente" || echo "Nada para commitar"
           git push
