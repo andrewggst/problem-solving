@@ -1,3 +1,19 @@
+name: Atualizar README da pasta beecrowd
+
+on:
+  push:
+    paths:
+      - 'beecrowd/**'
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
       - name: Configurar Git e sincronizar branch main
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
@@ -6,6 +22,11 @@
           git clean -fd
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
       - name: Gerar README.md da pasta beecrowd
         run: python .github/scripts/gerar_readme.py
