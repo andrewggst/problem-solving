@@ -1,4 +1,4 @@
-# Exercício 1011 – Volume de uma Esfera
+# Exercício 1011 – Esfera
 
 ## <img src="https://img.icons8.com/ios-glyphs/24/000000/book.png" alt="Enunciado" /> Enunciado (resumo)  
 Leia o valor do raio de uma esfera. Calcule e imprima o volume.
