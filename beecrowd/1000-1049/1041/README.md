@@ -1,4 +1,4 @@
-## Exercício 1041 – Coordenadas de um Ponto
+# Exercício 1041 – Coordenadas de um Ponto
 ### <img src="https://img.icons8.com/ios-glyphs/24/000000/book.png" alt="Enunciado" /> Enunciado (resumo)  
 Leia duas coordenadas (x e y) e determine se o ponto está na origem, eixo X, eixo Y ou em qual quadrante.
 
