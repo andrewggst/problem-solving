@@ -1,4 +1,4 @@
-## Exercício 1040 – Média 3
+# Exercício 1040 – Média 3
 ### <img src="https://img.icons8.com/ios-glyphs/24/000000/book.png" alt="Enunciado" /> Enunciado (resumo)  
 Leia quatro notas, calcule a média ponderada (pesos 2,3,4,1) e determine aprovação, reprovação ou exame (média final se necessário).
 
