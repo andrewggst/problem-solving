@@ -5,5 +5,5 @@ Leia três valores e verifique se formam triângulo; se sim, calcule o perímetr
 ## <img src="https://img.icons8.com/ios-glyphs/24/000000/link.png" /> Link para o problema  
 Beecrowd - [Exercício 1043](https://www.beecrowd.com.br/judge/pt/problems/view/1043)
 
-## <img src="https://img.icons8.com/ios‑glyphs/24/000000/code.png" /> Código  
+## <img src="https://img.icons8.com/ios-glyphs/24/000000/code.png" /> Código  
 O arquivo principal é [`1043.java`](1043.java).
