@@ -1,4 +1,4 @@
-# Exercício 1046 – Tempo de Jogo 2
+# Exercício 1046 – Tempo de Jogo 
 ## <img src="https://img.icons8.com/ios-glyphs/24/000000/book.png" alt="Enunciado" /> Enunciado (resumo)  
 Dados horário de início e fim (mesmo dia ou dia seguinte), calcule a duração em horas do jogo.
 
